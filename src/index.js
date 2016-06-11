@@ -26,7 +26,6 @@ function find(rows, evaluator) {
   // walk each row, left to right
   matrix.walk((point, i) => {
     const { value } = point;
-    console.log(i, point);
 
     // Is this of interest?
     if (!evaluator(value)) {
@@ -42,20 +41,16 @@ function find(rows, evaluator) {
       }
       currentGroup.push(i);
 
+      // TODO: check east and south
       // east
       // is this one we're interested in?
-
-
-
       //
     }
   });
 
   // convert each group from an Array of indices to an Array of [row, col].
   return groups.map(group => {
-    return group.map(index => {
-      matrix.getCoordsFromIndex(index);
-    })
+    return group.map(index => matrix.getCoordsFromIndex(index));
   });
 }
 

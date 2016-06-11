@@ -33,7 +33,7 @@ describe('find', () => {
       expect(result).to.eql(expected);
     });
 
-    it.only('scenario b', () => {
+    it('scenario b', () => {
       const matrix = [
         [0, 0, 0, 0],
         [0, 1, 1, 0],
