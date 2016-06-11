@@ -1,13 +1,6 @@
 import { expect } from 'chai';
 import app from '../src';
-import Matrix from '../src/Matrix';
-
-const a = [[]];
-const b = [
-  [0, 0, 0, 0],
-  [0, 1, 1, 0],
-];
-
+// import Matrix from '../src/Matrix';
 
 describe('find', () => {
   describe('bad params', () => {
@@ -34,7 +27,7 @@ describe('find', () => {
 
   describe('blob', () => {
     it('scenario a', () => {
-      // console.log(Matrix.print(a));
+      const a = [[]];
       const evaluator = () => {};
       const expected = [];
       const result = app.find(a, evaluator);
@@ -42,7 +35,10 @@ describe('find', () => {
     });
 
     it('scenario b', () => {
-      // console.log(Matrix.print(b));
+      const b = [
+        [0, 0, 0, 0],
+        [0, 1, 1, 0],
+      ];
       const evaluator = (value) => { return value === 1 };
       const expected = [
         // blob
@@ -81,7 +77,7 @@ describe('find', () => {
       expect(result[1]).to.eql(expected[1]);
     });
 
-    it.only('scenario d', () => {
+    it('scenario d', () => {
       const evaluator = (value) => { return value === 1 };
       const d = [
         [0, 1, 1, 1],

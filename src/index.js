@@ -29,10 +29,8 @@ function find(rows, evaluator) {
 
     // Is this of interest?
     if (!evaluator(value)) {
-      // no - next
       return;
     } else {
-      // yes -
 
       // Find group that this guy is already in.
       currentGroup = groups.find(group => group.indexOf(point.index) > -1);
@@ -40,28 +38,43 @@ function find(rows, evaluator) {
       if (!currentGroup) {
         currentGroup = [i];
         groups.push(currentGroup);
-        // TODO: join multiple groups
       }
 
+      // console.log('currentGroup', currentGroup);
+
       if (point.east && evaluator(point.east.value)) {
-        // console.log('The east is good too!');
-        currentGroup.push(point.east.index);
+        // TODO: join multiple groups
+        let eastGroup = groups.find(group =>
+          group.indexOf(point.east.index) > -1);
+
+        if (eastGroup) {
+          // console.log('merge groups', point.east.index, currentGroup, eastGroup);
+
+          // combine currentGroup with eastGroup
+          const eastGroupIndex = groups.indexOf(eastGroup);
+          const currentGroupIndex = groups.indexOf(currentGroup);
+          eastGroup = eastGroup.concat(currentGroup);
+          groups.splice(currentGroupIndex, 1);
+          currentGroup = groups[eastGroupIndex] = eastGroup;
+        } else {
+          currentGroup.push(point.east.index);
+        }
       }
 
       if (point.south && evaluator(point.south.value)) {
-        // console.log('The south is good too!');
         currentGroup.push(point.south.index);
       }
     }
   });
 
-
-  // console.log(matrix.print());
-
   // convert each group from an Array of indices to an Array of [row, col].
-  return groups.map(group => {
-    return group.map(index => matrix.getCoordsFromIndex(index));
-  });
+  return groups
+    .map(group => {
+      return group.sort((a, b) => {
+        return a - b;
+      })
+      .map(index => matrix.getCoordsFromIndex(index));
+    });
 }
 
 export default {
