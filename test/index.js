@@ -41,23 +41,23 @@ describe('find', () => {
       expect(fn).to.throw('invalid matrix');
     });
 
-    it('should throw when missing comparator', () => {
+    it('should throw when missing evaluator', () => {
       const fn = () => { app.find([]) };
-      expect(fn).to.throw('comparator is required');
+      expect(fn).to.throw('evaluator is required');
     });
 
-    it('should throw for invalid comparator', () => {
+    it('should throw for invalid evaluator', () => {
       const fn = () => { app.find([], true) };
-      expect(fn).to.throw('invalid comparator');
+      expect(fn).to.throw('invalid evaluator');
     });
   });
 
   describe('blob', () => {
     it('scenario a', () => {
       const matrix = [[]];
-      const comparator = () => {};
+      const evaluator = () => {};
       const expected = [];
-      const result = app.find(matrix, comparator);
+      const result = app.find(matrix, evaluator);
       expect(result).to.eql(expected);
     });
 
@@ -66,7 +66,7 @@ describe('find', () => {
         [0, 0, 0, 0],
         [0, 1, 1, 0],
       ];
-      const comparator = () => {};
+      const evaluator = () => {};
       const expected = [
         // blob
         [
@@ -74,7 +74,7 @@ describe('find', () => {
           [1, 2],
         ],
       ];
-      const result = app.find(matrix, comparator);
+      const result = app.find(matrix, evaluator);
       expect(result).to.eql(expected);
     });
   });
