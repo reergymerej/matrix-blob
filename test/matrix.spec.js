@@ -97,4 +97,28 @@ describe('Matrix', () => {
       expect(point.south.value).to.equal(3);
     });
   });
+
+  describe('getCoordsFromIndex', () => {
+    it('should return an array of [row, column] when valid', () => {
+      const rows = [
+        [1, 2],
+        [3, 4],
+      ];
+      const matrix = new Matrix(rows);
+      expect(matrix.getCoordsFromIndex(0)).to.eql([0, 0]);
+      expect(matrix.getCoordsFromIndex(1)).to.eql([0, 1]);
+      expect(matrix.getCoordsFromIndex(2)).to.eql([1, 0]);
+      expect(matrix.getCoordsFromIndex(3)).to.eql([1, 1]);
+    });
+
+    it('should should throw when invalid', () => {
+      const rows = [
+        [1, 2],
+        [3, 4],
+      ];
+      const matrix = new Matrix(rows);
+      expect(() => matrix.getCoordsFromIndex(4)).to.throw('out of range');
+      expect(() => matrix.getCoordsFromIndex(-1)).to.throw('out of range');
+    });
+  });
 });

@@ -33,12 +33,12 @@ describe('find', () => {
       expect(result).to.eql(expected);
     });
 
-    xit('scenario b', () => {
+    it.only('scenario b', () => {
       const matrix = [
         [0, 0, 0, 0],
         [0, 1, 1, 0],
       ];
-      const evaluator = () => {};
+      const evaluator = (value) => { return value === 1 };
       const expected = [
         // blob
         [

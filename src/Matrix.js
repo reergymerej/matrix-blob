@@ -37,6 +37,7 @@ function Matrix(rows) {
   }
 
   this.rows = rows;
+  this.rowLength = this.rows[0].length;
 }
 
 Matrix.prototype.value = function (row, column) {
@@ -71,6 +72,29 @@ Matrix.prototype.point = function (row, column) {
     east: this.east(row, column),
     south: this.south(row, column),
   };
+};
+
+// Walks matrix from [0, 0] by row, then column,
+// passing each value and unique index.
+Matrix.prototype.walk = function (fn) {
+  let i = 0;
+  this.rows.map((row, rowIndex) => {
+    row.map((field, columnIndex) => {
+      const point = this.point(rowIndex, columnIndex);
+      return fn(point, i++);
+    });
+  });
+};
+
+Matrix.prototype.getCoordsFromIndex = function (index) {
+  if (index < 0 || index > this.rows.length * this.rowLength - 1) {
+    err('out of range');
+  }
+
+  const rowIndex = Math.floor(index / this.rowLength);
+  const columnIndex = index % this.rowLength;
+
+  return [rowIndex, columnIndex];
 };
 
 export default Matrix;
