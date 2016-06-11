@@ -1,19 +1,5 @@
 import Matrix from './Matrix';
 
-/**
-* We're using a simple matrix design for now.
-* [
-*   [0, 0, 0],
-*   [0, 1, 1],
-*   [0, 1, 0],
-* ]
-*/
-function isValidMatrix(matrix) {
-  return Array.isArray(matrix)
-    && allRowsValid(matrix)
-    && allRowsSameLength(matrix);
-}
-
 function err(message) {
   throw new Error(message);
 }
@@ -34,6 +20,5 @@ function find(rows, evaluator) {
 }
 
 export default {
-  isValidMatrix,
   find,
 };
