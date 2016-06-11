@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import app from '../src';
 
-describe.only('isValidMatrix', () => {
+describe('isValidMatrix', () => {
   it('should return false if not an Array', () => {
     const matrix = 1;
     const result = app.isValidMatrix(matrix);
@@ -54,19 +54,28 @@ describe('find', () => {
 
   describe('blob', () => {
     it('scenario a', () => {
-      const matrix = [0, 0, 0, 0];
+      const matrix = [[]];
       const comparator = () => {};
       const expected = [];
       const result = app.find(matrix, comparator);
       expect(result).to.eql(expected);
     });
 
-    it('scenario b', () => {
-      const matrix = [0, 0, 0, 0];
+    xit('scenario b', () => {
+      const matrix = [
+        [0, 0, 0, 0],
+        [0, 1, 1, 0],
+      ];
       const comparator = () => {};
-      const expected = [];
+      const expected = [
+        // blob
+        [
+          [1, 1],
+          [1, 2],
+        ],
+      ];
       const result = app.find(matrix, comparator);
-      expect(result).not.to.eql(expected);
+      expect(result).to.eql(expected);
     });
   });
 });

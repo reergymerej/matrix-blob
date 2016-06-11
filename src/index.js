@@ -1,6 +1,6 @@
 function allRowsValid(matrix) {
   // Is each row an Array?
-  return !matrix.find(row => !Array.isArray(row));
+  return matrix.find(row => !Array.isArray(row)) === undefined;
 }
 
 function allRowsSameLength(matrix) {
