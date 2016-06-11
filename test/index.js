@@ -1,6 +1,34 @@
 import { expect } from 'chai';
 import app from '../src';
 
+describe.only('isValidMatrix', () => {
+  it('should return false if not an Array', () => {
+    const matrix = 1;
+    const result = app.isValidMatrix(matrix);
+    expect(result).to.equal(false);
+  });
+
+  it('should return false if rows inequal in length', () => {
+    const matrix = [
+      [1, 1],
+      [1, 1],
+      [1, 1, 1],
+    ];
+    const result = app.isValidMatrix(matrix);
+    expect(result).to.equal(false);
+  });
+
+  it('should return true for a valid matrix', () => {
+    const matrix = [
+      [1, 1, 1],
+      [1, 1, 1],
+      [1, 1, 1],
+    ];
+    const result = app.isValidMatrix(matrix);
+    expect(result).to.equal(true);
+  });
+});
+
 describe('find', () => {
   describe('bad params', () => {
     it('should throw when missing matrix', () => {
@@ -24,13 +52,21 @@ describe('find', () => {
     });
   });
 
-  describe('blobs', () => {
-    it('should return nothing', () => {
+  describe('blob', () => {
+    it('scenario a', () => {
       const matrix = [0, 0, 0, 0];
       const comparator = () => {};
       const expected = [];
       const result = app.find(matrix, comparator);
       expect(result).to.eql(expected);
+    });
+
+    it('scenario b', () => {
+      const matrix = [0, 0, 0, 0];
+      const comparator = () => {};
+      const expected = [];
+      const result = app.find(matrix, comparator);
+      expect(result).not.to.eql(expected);
     });
   });
 });

@@ -1,5 +1,32 @@
+function allRowsValid(matrix) {
+  // Is each row an Array?
+  return !matrix.find(row => !Array.isArray(row));
+}
+
+function allRowsSameLength(matrix) {
+  let length;
+  return !matrix.some(row => {
+    if (length === undefined) {
+      length = row.length;
+      return false;
+    } else {
+      return row.length !== length;
+    }
+  });
+}
+
+/**
+* We're using a simple matrix design for now.
+* [
+*   [0, 0, 0],
+*   [0, 1, 1],
+*   [0, 1, 0],
+* ]
+*/
 function isValidMatrix(matrix) {
-  return Array.isArray(matrix);
+  return Array.isArray(matrix)
+    && allRowsValid(matrix)
+    && allRowsSameLength(matrix);
 }
 
 function err(message) {
@@ -23,5 +50,6 @@ function find(matrix, comparator) {
 }
 
 export default {
+  isValidMatrix,
   find,
 };
