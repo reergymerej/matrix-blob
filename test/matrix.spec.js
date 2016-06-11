@@ -41,6 +41,16 @@ describe('Matrix', () => {
       expect(point.value).to.equal(3);
     });
 
+    it('should have the unique index', () => {
+      const rows = [
+        [1, 2],
+        [3, 4],
+      ];
+      const matrix = new Matrix(rows);
+      const point = matrix.point(1, 1);
+      expect(point.index).to.equal(3);
+    });
+
     describe('east', () => {
       it('should have value if present ', () => {
         const rows = [

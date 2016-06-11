@@ -53,6 +53,7 @@ Matrix.prototype.field = function (row, column) {
   const field = this.exists(row, column);
   return field
     ? {
+      index: this.getIndexFromCoords(row, column),
       value: this.value(row, column),
     }
     : undefined;
@@ -68,6 +69,7 @@ Matrix.prototype.south = function (row, column) {
 
 Matrix.prototype.point = function (row, column) {
   return {
+    index: this.getIndexFromCoords(row, column),
     value: this.value(row, column),
     east: this.east(row, column),
     south: this.south(row, column),
@@ -91,10 +93,22 @@ Matrix.prototype.getCoordsFromIndex = function (index) {
     err('out of range');
   }
 
-  const rowIndex = Math.floor(index / this.rowLength);
-  const columnIndex = index % this.rowLength;
+  const row = Math.floor(index / this.rowLength);
+  const column = index % this.rowLength;
 
-  return [rowIndex, columnIndex];
+  return [row, column];
+};
+
+Matrix.prototype.getIndexFromCoords = function (row, col) {
+  return row * this.rowLength + col;
+};
+
+Matrix.prototype.print = function () {
+  return this.rows.map(row => row.join('|')).join('\n');
+};
+
+Matrix.print = function (rows) {
+  return new Matrix(rows).print();
 };
 
 export default Matrix;

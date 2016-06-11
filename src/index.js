@@ -34,19 +34,29 @@ function find(rows, evaluator) {
     } else {
       // yes -
 
-      // Add it to a group.
-      if (!currentGroup) {
-        currentGroup = [];
-        groups.push(currentGroup);
-      }
-      currentGroup.push(i);
+      // Find group that this guy is already in.
+      currentGroup = groups.find(group => group.indexOf(point.index) > -1);
 
-      // TODO: check east and south
-      // east
-      // is this one we're interested in?
-      //
+      if (!currentGroup) {
+        currentGroup = [i];
+        groups.push(currentGroup);
+        // TODO: join multiple groups
+      }
+
+      if (point.east && evaluator(point.east.value)) {
+        // console.log('The east is good too!');
+        currentGroup.push(point.east.index);
+      }
+
+      if (point.south && evaluator(point.south.value)) {
+        // console.log('The south is good too!');
+        currentGroup.push(point.south.index);
+      }
     }
   });
+
+
+  // console.log(matrix.print());
 
   // convert each group from an Array of indices to an Array of [row, col].
   return groups.map(group => {
