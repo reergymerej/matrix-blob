@@ -1,19 +1,4 @@
-function allRowsValid(matrix) {
-  // Is each row an Array?
-  return matrix.find(row => !Array.isArray(row)) === undefined;
-}
-
-function allRowsSameLength(matrix) {
-  let length;
-  return !matrix.some(row => {
-    if (length === undefined) {
-      length = row.length;
-      return false;
-    } else {
-      return row.length !== length;
-    }
-  });
-}
+import Matrix from './Matrix';
 
 /**
 * We're using a simple matrix design for now.
@@ -33,11 +18,9 @@ function err(message) {
   throw new Error(message);
 }
 
-function find(matrix, evaluator) {
-  if (!matrix) {
+function find(rows, evaluator) {
+  if (!rows) {
     err('matrix is required');
-  } else if (!isValidMatrix(matrix)) {
-    err('invalid matrix');
   }
 
   if (!evaluator) {
@@ -46,6 +29,7 @@ function find(matrix, evaluator) {
     err('invalid evaluator');
   }
 
+  const matrix = new Matrix(rows);
   return [];
 }
 
