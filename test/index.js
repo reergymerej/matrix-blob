@@ -1,6 +1,18 @@
 import { expect } from 'chai';
 import app from '../src';
-// import Matrix from '../src/Matrix';
+
+// const matrix = [
+// // 0  1  2  3  4  5  6  7  8
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0], // 0
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0], // 1
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0], // 2
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0], // 3
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0], // 4
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0], // 5
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0], // 6
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0], // 7
+//   [0, 0, 0, 0, 0, 0, 0, 0, 0], // 8
+// ];
 
 describe('find', () => {
   describe('bad params', () => {
@@ -123,6 +135,90 @@ describe('find', () => {
       expect(result[1]).to.eql(blob2);
       expect(result.length).to.equal(2);
     });
+
+    it('scenario circle', () => {
+      const evaluator = (value) => { return value === 1 };
+      const matrix = [
+      // 0  1  2  3  4  5  6  7  8
+        [1, 1, 1, 1, 1, 1, 1, 1, 1], // 0
+        [1, 0, 0, 0, 0, 0, 0, 0, 1], // 1
+        [1, 0, 0, 0, 0, 0, 0, 0, 1], // 2
+        [1, 0, 0, 0, 0, 0, 0, 0, 1], // 3
+        [1, 0, 0, 0, 0, 0, 0, 0, 1], // 4
+        [1, 0, 0, 0, 0, 0, 0, 0, 1], // 5
+        [1, 0, 0, 0, 0, 0, 0, 0, 1], // 6
+        [1, 0, 0, 0, 0, 0, 0, 0, 1], // 7
+        [1, 1, 1, 1, 1, 1, 1, 1, 1], // 8
+      ];
+      const blob1 = [
+        [0, 0],
+        [0, 1],
+        [0, 2],
+        [0, 3],
+        [0, 4],
+        [0, 5],
+        [0, 6],
+        [0, 7],
+        [0, 8],
+
+        [1, 0], [1, 8],
+        [2, 0], [2, 8],
+        [3, 0], [3, 8],
+        [4, 0], [4, 8],
+        [5, 0], [5, 8],
+        [6, 0], [6, 8],
+        [7, 0], [7, 8],
+
+        [8, 0],
+        [8, 1],
+        [8, 2],
+        [8, 3],
+        [8, 4],
+        [8, 5],
+        [8, 6],
+        [8, 7],
+        [8, 8],
+      ];
+      const result = app.find(matrix, evaluator);
+      expect(result[0]).to.eql(blob1);
+      expect(result.length).to.equal(1);
+    });
+
+    it('scenario evaluator threshold', () => {
+      const evaluator = (value) => { return value >= 5 };
+      const matrix = [
+      // 0  1  2  3
+        [5, 6, 0, 0], // 0
+        [4, 0, 1, 6], // 1
+        [0, 2, 1, 8], // 2
+        [0, 9, 3, 7], // 3
+        [0, 9, 8, 0], // 4
+      ];
+      const expected = [
+        // blob 1
+        [
+          [0, 0],
+          [0, 1],
+        ],
+
+        // blob 2
+        [
+          [1, 3],
+          [2, 3],
+          [3, 3],
+        ],
+
+        // blob 3
+        [
+          [3, 1],
+          [4, 1],
+          [4, 2],
+        ],
+      ];
+      const result = app.find(matrix, evaluator);
+      expect(result).to.eql(expected);
+    });
+
 
     it('should work for any value', () => {
       const Y = 666;
