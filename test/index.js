@@ -41,7 +41,6 @@ describe('find', () => {
       ];
       const evaluator = (value) => { return value === 1 };
       const expected = [
-        // blob
         [
           [1, 1],
           [1, 2],
@@ -172,6 +171,21 @@ describe('find', () => {
       expect(result[0]).to.eql(blob1);
       // expect(result[1]).to.eql(blob2);
       expect(result.length).to.equal(2);
+    });
+  });
+
+  describe('find with indices option', () => {
+    it('should return indices instead of coords', () => {
+      const matrix = [
+        [0, 0, 0, 0],
+        [0, 1, 1, 0],
+      ];
+      const evaluator = (value) => { return value === 1 };
+      const expected = [
+        [ 5, 6 ],
+      ];
+      const result = app.find(matrix, evaluator, true);
+      expect(result).to.eql(expected);
     });
   });
 });

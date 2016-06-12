@@ -32,7 +32,7 @@ function combineGroups(groups, groupA, groupB) {
   return groups[groupBIndex] = groupB;
 }
 
-function find(rows, evaluator) {
+function find(rows, evaluator, returnIndices = false) {
   if (!rows) {
     err('matrix is required');
   }
@@ -81,8 +81,10 @@ function find(rows, evaluator) {
   // convert each group from an Array of indices to an Array of [row, col].
   return groups
     .map(group => {
-      return group.sort(sortAscending)
-      .map(index => matrix.getCoordsFromIndex(index));
+      const sorted = group.sort(sortAscending);
+      return returnIndices
+        ? sorted
+        : sorted.map(index => matrix.getCoordsFromIndex(index));
     });
 }
 
