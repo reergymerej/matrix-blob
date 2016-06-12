@@ -77,13 +77,12 @@ Matrix.prototype.point = function (row, column) {
 };
 
 // Walks matrix from [0, 0] by row, then column,
-// passing each value and unique index.
+// passing each point.
 Matrix.prototype.walk = function (fn) {
-  let i = 0;
   this.rows.map((row, rowIndex) => {
     row.map((field, columnIndex) => {
       const point = this.point(rowIndex, columnIndex);
-      return fn(point, i++);
+      return fn(point);
     });
   });
 };

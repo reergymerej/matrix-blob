@@ -17,6 +17,21 @@ function addToGroup(group, index) {
   return group;
 }
 
+/**
+* Adds groupA to groupB in groups, removes groupA
+* @param {Array[]} groups - contains both groups, side effects!
+* @param {Array[]} groupA
+* @param {Array[]} groupB
+* @return combined group
+*/
+function combineGroups(groups, groupA, groupB) {
+  const groupAIndex = groups.indexOf(groupA);
+  const groupBIndex = groups.indexOf(groupB);
+  groupB = groupB.concat(groupA);
+  groups.splice(groupAIndex, 1);
+  return groups[groupBIndex] = groupB;
+}
+
 function find(rows, evaluator) {
   if (!rows) {
     err('matrix is required');
@@ -30,43 +45,27 @@ function find(rows, evaluator) {
 
   const matrix = new Matrix(rows);
 
-  const groups = [
-    // a group is an array of matrix point indices
-    // [0, 1]
-  ];
-  let currentGroup;
+  // a group is an array of matrix point indices
+  // [0, 1]
+  const groups = [];
 
-  // walk each row, left to right
-  matrix.walk((point, i) => {
+  matrix.walk(point => {
     const { value } = point;
 
-    // Is this of interest?
-    if (!evaluator(value)) {
-      return;
-    } else {
-
-      // Find group that this guy is already in.
-      currentGroup = findGroupContainingIndex(groups, point.index);
+    if (evaluator(value)) {
+      let currentGroup = findGroupContainingIndex(groups, point.index);
 
       if (!currentGroup) {
-        currentGroup = addToGroup([], i);
+        currentGroup = addToGroup([], point.index);
         groups.push(currentGroup);
       }
 
       if (point.east && evaluator(point.east.value)) {
-        // TODO: join multiple groups
-        let eastGroup = groups.find(group =>
-          group.indexOf(point.east.index) > -1);
+        const eastGroup = findGroupContainingIndex(groups, point.east.index);
 
         if (eastGroup) {
           if (currentGroup !== eastGroup) {
-            // combine currentGroup with eastGroup
-
-            const eastGroupIndex = groups.indexOf(eastGroup);
-            const currentGroupIndex = groups.indexOf(currentGroup);
-            eastGroup = eastGroup.concat(currentGroup);
-            groups.splice(currentGroupIndex, 1);
-            currentGroup = groups[eastGroupIndex] = eastGroup;
+            currentGroup = combineGroups(groups, currentGroup, eastGroup);
           }
         } else {
           currentGroup = addToGroup(currentGroup, point.east.index);
@@ -74,7 +73,6 @@ function find(rows, evaluator) {
       }
 
       if (point.south && evaluator(point.south.value)) {
-        // currentGroup.push(point.south.index);
         currentGroup = addToGroup(currentGroup, point.south.index);
       }
     }
