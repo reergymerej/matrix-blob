@@ -27,9 +27,12 @@ function addToGroup(group, index) {
 function combineGroups(groups, groupA, groupB) {
   const groupAIndex = groups.indexOf(groupA);
   const groupBIndex = groups.indexOf(groupB);
+
   groupB = groupB.concat(groupA);
+  groups[groupBIndex] = groupB;
+
   groups.splice(groupAIndex, 1);
-  return groups[groupBIndex] = groupB;
+  return groupB;
 }
 
 function find(rows, evaluator, returnIndices = false) {
@@ -50,14 +53,17 @@ function find(rows, evaluator, returnIndices = false) {
   const groups = [];
 
   matrix.walk(point => {
+    // console.log('\n', matrix.getCoordsFromIndex(point.index), '---');
     const { value } = point;
 
     if (evaluator(value)) {
       let currentGroup = findGroupContainingIndex(groups, point.index);
 
       if (!currentGroup) {
+        // console.log('new group', point.index);
         currentGroup = addToGroup([], point.index);
         groups.push(currentGroup);
+        // console.log('groups', groups);
       }
 
       if (point.east && evaluator(point.east.value)) {
