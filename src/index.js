@@ -4,6 +4,19 @@ function err(message) {
   throw new Error(message);
 }
 
+function sortAscending(a, b) {
+  return a - b;
+}
+
+function findGroupContainingIndex(groups, index) {
+  return groups.find(group => group.indexOf(index) > -1);
+}
+
+function addToGroup(group, index) {
+  group.push(index);
+  return group;
+}
+
 function find(rows, evaluator) {
   if (!rows) {
     err('matrix is required');
@@ -33,14 +46,12 @@ function find(rows, evaluator) {
     } else {
 
       // Find group that this guy is already in.
-      currentGroup = groups.find(group => group.indexOf(point.index) > -1);
+      currentGroup = findGroupContainingIndex(groups, point.index);
 
       if (!currentGroup) {
-        currentGroup = [i];
+        currentGroup = addToGroup([], i);
         groups.push(currentGroup);
       }
-
-      // console.log('currentGroup', currentGroup);
 
       if (point.east && evaluator(point.east.value)) {
         // TODO: join multiple groups
@@ -48,21 +59,23 @@ function find(rows, evaluator) {
           group.indexOf(point.east.index) > -1);
 
         if (eastGroup) {
-          // console.log('merge groups', point.east.index, currentGroup, eastGroup);
+          if (currentGroup !== eastGroup) {
+            // combine currentGroup with eastGroup
 
-          // combine currentGroup with eastGroup
-          const eastGroupIndex = groups.indexOf(eastGroup);
-          const currentGroupIndex = groups.indexOf(currentGroup);
-          eastGroup = eastGroup.concat(currentGroup);
-          groups.splice(currentGroupIndex, 1);
-          currentGroup = groups[eastGroupIndex] = eastGroup;
+            const eastGroupIndex = groups.indexOf(eastGroup);
+            const currentGroupIndex = groups.indexOf(currentGroup);
+            eastGroup = eastGroup.concat(currentGroup);
+            groups.splice(currentGroupIndex, 1);
+            currentGroup = groups[eastGroupIndex] = eastGroup;
+          }
         } else {
-          currentGroup.push(point.east.index);
+          currentGroup = addToGroup(currentGroup, point.east.index);
         }
       }
 
       if (point.south && evaluator(point.south.value)) {
-        currentGroup.push(point.south.index);
+        // currentGroup.push(point.south.index);
+        currentGroup = addToGroup(currentGroup, point.south.index);
       }
     }
   });
@@ -70,9 +83,7 @@ function find(rows, evaluator) {
   // convert each group from an Array of indices to an Array of [row, col].
   return groups
     .map(group => {
-      return group.sort((a, b) => {
-        return a - b;
-      })
+      return group.sort(sortAscending)
       .map(index => matrix.getCoordsFromIndex(index));
     });
 }

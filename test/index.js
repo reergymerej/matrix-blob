@@ -102,5 +102,76 @@ describe('find', () => {
       expect(result[0]).to.eql(expected[0]);
       expect(result.length).to.equal(1);
     });
+
+    it('scenario 3', () => {
+      const evaluator = (value) => { return value === 1 };
+      const d = [
+        [0, 0, 1],
+        [0, 0, 0],
+        [0, 0, 1],
+        [0, 1, 1],
+      ];
+      const blob1 = [
+        [0, 2],
+      ];
+      const blob2 = [
+        [2, 2],
+        [3, 1],
+        [3, 2],
+      ];
+      const result = app.find(d, evaluator);
+      expect(result[0]).to.eql(blob1);
+      expect(result[1]).to.eql(blob2);
+      expect(result.length).to.equal(2);
+    });
+
+    xit('should work for any value', () => {
+      const Y = 666;
+      const evaluator = (value) => {
+        return value === Y;
+      };
+      const d = [
+        [0, 0, Y, Y, Y, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, Y, 0, 0, 0, 0],
+        [0, Y, Y, Y, Y, 0, Y],
+        [0, 0, 0, Y, Y, Y, Y],
+        [0, 0, 0, 0, 0, Y, 0],
+        [0, 0, 0, 0, 0, Y, Y],
+      ];
+      const blob1 = [
+        [0, 2],
+        [0, 3],
+        [0, 4],
+      ];
+      const blob2 = [
+        [2, 2],
+
+        [3, 1],
+        [3, 2],
+        [3, 3],
+        [3, 4],
+        [3, 6],
+
+        [4, 3],
+        [4, 4],
+        [4, 5],
+        [4, 6],
+
+        [5, 5],
+
+        [6, 5],
+        [6, 6],
+      ];
+      const expected = [
+        blob1,
+        blob2,
+      ];
+      const result = app.find(d, evaluator);
+      console.log(result);
+      expect(result[0]).to.eql(blob1);
+      // expect(result[1]).to.eql(blob2);
+      expect(result.length).to.equal(2);
+    });
   });
 });
